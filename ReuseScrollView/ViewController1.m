@@ -11,6 +11,7 @@
 @interface ViewController1 () <UIScrollViewDelegate> {
     CGFloat width;
     BOOL lastOperateIsDelete;
+    CGFloat padding;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -27,6 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    padding = 10;
+    
     UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-60)];
     scroll.delegate = self;
     scroll.scrollsToTop = YES;
@@ -38,7 +41,7 @@
     self.visiArray = [NSMutableArray array];
     self.sources = [NSMutableArray array];
     
-    width = CGRectGetWidth(self.view.frame) / 10;
+    width = (CGRectGetWidth(self.view.frame) - 10 * padding) / 10;
     
     for (NSInteger i = 0; i < 15; i++) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, CGRectGetHeight(self.scrollView.frame))];
@@ -83,7 +86,7 @@
     
     for (NSInteger i = 0; i < self.sources.count; i++) {
         UIView *view = [self.reuseArray firstObject];
-        view.frame = CGRectMake(width*i, 0, width, CGRectGetHeight(self.scrollView.frame));
+        view.frame = CGRectMake(width*i+padding*(i+1), 0, width, CGRectGetHeight(self.scrollView.frame));
         
         UILabel *label = [view viewWithTag:1];
         if (label) {
@@ -128,7 +131,7 @@
         double bN = ceilf((CGRectGetWidth(self.scrollView.frame) + offsetX - lMaxX) / width);
         
         for (int i = 0; i < tN; i++) {
-            CGFloat x = CGRectGetMinX(fView.frame) - width;
+            CGFloat x = CGRectGetMinX(fView.frame) - width - padding;
             if (x < 0) {
                 break ;
             }
@@ -150,7 +153,7 @@
                 break ;
             }
             UIView *view = [_reuseArray firstObject];
-            view.frame = CGRectMake(CGRectGetMaxX(lView.frame), 0, width, CGRectGetHeight(self.scrollView.frame));
+            view.frame = CGRectMake(CGRectGetMaxX(lView.frame) + padding, 0, width, CGRectGetHeight(self.scrollView.frame));
             [self.scrollView addSubview:view];
             [_visiArray addObject:view];
             [_reuseArray removeObject:view];
